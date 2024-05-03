@@ -1,0 +1,105 @@
+﻿<Window x:Class="courseworkkk.View.CarsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:courseworkkk.View"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:localMy="clr-namespace:courseworkkk.Model"
+        mc:Ignorable="d"
+        Title="Добавление автомобиля" Height="800" Width="900">
+    <Window.Resources>
+        <localMy:FromBytesToImageConverter x:Key="myConverter"/>
+    </Window.Resources>
+    <Grid Background="#C8C6FB">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="6*"/>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <ListBox x:Name="Cars" Grid.Row="0" Margin="10,10,10,10"
+                    ItemsSource="{Binding CarsList}" 
+                      SelectedItem="{Binding SelectedCar}" Grid.ColumnSpan="2">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="5">
+                                <TextBlock Text="{Binding Path=Year}" FontSize="15" />
+                                <TextBlock Text="{Binding Path=Brand}" FontSize="15" />
+                                <TextBlock Text="{Binding Path=Price}" FontSize="15" />
+                                <TextBlock Text="{Binding Path=Power}" FontSize="15" />
+                                <TextBlock Text="{Binding Path=Vin}" FontSize="15" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="2">
+                    <Button Content="Добавить" Width="100" Margin="10" Command="{Binding InsertCommand}"/>
+                    <Button Content="Удалить" Width="100" Margin="10" Command="{Binding RemoveCommand}" CommandParameter="{Binding ElementName=Cars, Path=SelectedItem}"/>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="6*"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Vertical" Cursor="">
+                        <StackPanel Grid.Column="0">
+                            <materialDesign:Card Margin="5">
+                                <Image x:Name="StateImage" Margin="10" Height="200" 
+                                   Source="{Binding ImageState,Converter={StaticResource myConverter}}"/>
+                            </materialDesign:Card>
+                        </StackPanel>
+                        <materialDesign:Card Margin="5">
+                            <Button Content="Загрузить" FontSize="20" Command="{Binding LoadCommand}"/>
+                        </materialDesign:Card>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <materialDesign:Card Padding="5" Margin="5">
+                            <ComboBox x:Name="cbClient" materialDesign:HintAssist.Hint="Выберите клиента" Height="40" Margin="10" ItemsSource="{Binding ClientsList}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="{Binding FirstName}"/>
+                                            <Label Content="{Binding SecondName}"/>
+                                            <Label Content="{Binding LastName}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </materialDesign:Card>
+                        <materialDesign:Card Padding="5" Margin="5">
+                            <TextBox x:Name="year" DataContext="{Binding SelectedCar}" materialDesign:HintAssist.Hint="Введите год выпуска" Height="40" Margin="10" 
+                                 Text="{Binding Year, UpdateSourceTrigger=PropertyChanged}"/>
+                        </materialDesign:Card>
+                        <materialDesign:Card Padding="5" Margin="5">
+                            <TextBox x:Name="brand"  DataContext="{Binding SelectedCar}" materialDesign:HintAssist.Hint="Введите модель" Height="40" Margin="10" 
+                                     Text="{Binding Brand, UpdateSourceTrigger=PropertyChanged}"/>
+                        </materialDesign:Card>
+                        <materialDesign:Card Padding="5" Margin="5">
+                            <TextBox x:Name="price" DataContext="{Binding SelectedCar}" materialDesign:HintAssist.Hint="Введите стоимость автомобиля" Height="40" Margin="10" 
+                                 Text="{Binding Price, UpdateSourceTrigger=PropertyChanged}"/>
+                        </materialDesign:Card>
+                        <materialDesign:Card Padding="5" Margin="5">
+                            <TextBox x:Name="power" DataContext="{Binding SelectedCar}" materialDesign:HintAssist.Hint="Введите мощность двигателя" Height="40" Margin="10"
+                                 Text="{Binding Power, UpdateSourceTrigger=PropertyChanged}"/>
+                        </materialDesign:Card>
+                        <materialDesign:Card Padding="5" Margin="5">
+                            <TextBox x:Name="vin" DataContext="{Binding SelectedCar}" materialDesign:HintAssist.Hint="Введите VIN автомобиля" Height="40" Margin="10"
+                                 Text="{Binding Vin, UpdateSourceTrigger=PropertyChanged}"/>
+                        </materialDesign:Card>
+                    </StackPanel>
+                </Grid>
+                <Button Content="Применить"  Width="110" Margin="5" Grid.Row="1" Command="{Binding UpdateCommand}" CommandParameter="{Binding SelectedCar}"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
